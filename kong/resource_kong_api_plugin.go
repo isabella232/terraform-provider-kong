@@ -17,7 +17,7 @@ type Plugin struct {
 	Configuration map[string]interface{} `json:"config,omitempty"`
 	API           string                 `json:"api_id,omitempty"`
 	Consumer      string                 `json:"consumer_id,omitempty"`
-	Enabled       string                 `json:"enabled,omitempty"`
+	Enabled       bool                   `json:"enabled,omitempty"`
 }
 
 func resourceKongPlugin() *schema.Resource {
@@ -33,7 +33,7 @@ func resourceKongPlugin() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"enabled": &schema.Schema{
-				Type:        schema.TypeString,
+				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
 				Description: "Whether to enabled this plugin.",
@@ -246,7 +246,7 @@ func getPluginFromResourceData(d *schema.ResourceData) (*Plugin, error) {
 		Name:     d.Get("name").(string),
 		API:      d.Get("api").(string),
 		Consumer: d.Get("consumer").(string),
-		Enabled:  d.Get("enabled").(string),
+		Enabled:  d.Get("enabled").(bool),
 	}
 
 	config, err := getPluginConfig(d)
