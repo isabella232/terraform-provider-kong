@@ -30,12 +30,6 @@ func resourceKongConsumerACL() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"id": &schema.Schema{
-				Type:        schema.TypeString,
-				Computed:    true,
-				Description: "The id of the consumer-acl association.",
-			},
-
 			"consumer": &schema.Schema{
 				Type:        schema.TypeString,
 				Required:    true,

@@ -26,11 +26,6 @@ func resourceKongConsumer() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"id": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
-			},
-
 			"username": &schema.Schema{
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -75,7 +70,7 @@ func resourceKongConsumerCreate(d *schema.ResourceData, meta interface{}) error 
 func resourceKongConsumerRead(d *schema.ResourceData, meta interface{}) error {
 	sling := meta.(*sling.Sling)
 
-	id := d.Get("id").(string)
+	id := d.Id()
 	consumer := new(Consumer)
 
 	errorResponse := make(map[string]interface{})
@@ -121,7 +116,7 @@ func resourceKongConsumerUpdate(d *schema.ResourceData, meta interface{}) error 
 func resourceKongConsumerDelete(d *schema.ResourceData, meta interface{}) error {
 	sling := meta.(*sling.Sling)
 
-	id := d.Get("id").(string)
+	id := d.Id()
 
 	errorResponse := make(map[string]interface{})
 	response, error := sling.New().Delete("consumers/").Path(id).Receive(nil, &errorResponse)
@@ -138,12 +133,9 @@ func resourceKongConsumerDelete(d *schema.ResourceData, meta interface{}) error 
 
 func getConsumerFromResourceData(d *schema.ResourceData) *Consumer {
 	consumer := &Consumer{
+		ID:       d.Id(),
 		Username: d.Get("username").(string),
 		CustomID: d.Get("custom_id").(string),
-	}
-
-	if id, ok := d.GetOk("id"); ok {
-		consumer.ID = id.(string)
 	}
 
 	return consumer
